@@ -47,8 +47,8 @@ class Report:
         Get campaign report data from Appier Cost API.
 
         Args:
-            start_date: Format: YYYY-MM-DD
-            end_date: Format: YYYY-MM-DD
+            start_date: Format YYYY-MM-DD
+            end_date: Format YYYY-MM-DD
             timezone: Timezone offset in hours.
             max_retries: Number of retries before giving up.
             retry_interval: Time to wait between retries.
@@ -101,8 +101,8 @@ class Report:
         Wrapper for _get_report() to get report data from Appier Cost API.
 
         Args:
-            start_date: Format: YYYY-MM-DD
-            end_date: Format: YYYY-MM-DD
+            start_date: Format YYYY-MM-DD
+            end_date: Format YYYY-MM-DD
             date_interval: Number of days between each request.
             timezone: Timezone offset in hours.
             max_retries: Number of retries before giving up.
