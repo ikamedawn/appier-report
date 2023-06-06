@@ -1,9 +1,9 @@
 import time
 import traceback
+from datetime import datetime, timedelta
 
 import requests
 
-from datetime import datetime, timedelta
 from src.utils.date_utils import DateUtils
 
 
@@ -11,12 +11,13 @@ class Report:
     """
     This class is used to interact with the Appier Campaign Report API.
     """
+
     ENDPOINTS = {
         "campaign": "https://mmp.appier.org/campaign_report",
         "inventory": "https://mmp.appier.org/inventory_report",
     }
 
-    def __init__(self, api_type: str = 'campaign', access_token: str = ''):
+    def __init__(self, api_type: str = "campaign", access_token: str = ""):
         """
         Args:
             api_type: "campaign" or "inventory"
@@ -86,15 +87,16 @@ class Report:
         print(traceback.format_exc())
         raise Exception(f"Error: {response.status_code}")
 
-    def get_report(self,
-                   start_date: str = None,
-                   end_date: str = None,
-                   date_interval: int = 5,
-                   timezone: int = 0,
-                   max_retries: int = 3,
-                   retry_interval: int = 30,
-                   **kwargs,
-                   ) -> list[dict]:
+    def get_report(
+        self,
+        start_date: str = None,
+        end_date: str = None,
+        date_interval: int = 5,
+        timezone: int = 0,
+        max_retries: int = 3,
+        retry_interval: int = 30,
+        **kwargs,
+    ) -> list[dict]:
         """
         Wrapper for _get_report() to get report data from Appier Cost API.
 
@@ -120,11 +122,15 @@ class Report:
 
         result = []
         for start, end in date_ranges:
-            result.extend(self._get_report(start_date=start,
-                                           end_date=end,
-                                           timezone=timezone,
-                                           max_retries=max_retries,
-                                           retry_interval=retry_interval,
-                                           **kwargs))
+            result.extend(
+                self._get_report(
+                    start_date=start,
+                    end_date=end,
+                    timezone=timezone,
+                    max_retries=max_retries,
+                    retry_interval=retry_interval,
+                    **kwargs,
+                )
+            )
 
         return result
