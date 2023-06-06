@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-"""Tests for `src` package."""
+"""Tests for `appier_report` package."""
 # pylint: disable=redefined-outer-name
 import os
 import pytest
 
 from datetime import datetime, timedelta
 
-from src import Report
+from appier_report import Report
 
 
 @pytest.fixture

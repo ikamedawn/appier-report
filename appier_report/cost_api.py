@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import requests
 
-from src.utils.date_utils import DateUtils
+from appier_report.utils.date_utils import DateUtils
 
 
 class Report:

@@ -1,7 +1,7 @@
-site_name: appier-report
+site_name: appier_report
 # site_url: http://www.jieyu.ai
 repo_url: https://github.com/ikamedawn/appier-report
-repo_name: appier-report
+repo_name: appier_report
 #strict: true
 nav:
     -   Home: index.md
@@ -57,7 +57,7 @@ plugins:
             lang: en
     -   mkdocstrings:
             watch:
-                - src
+                - appier_report
 extra:
     social:
         -   icon: fontawesome/brands/github

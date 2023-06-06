@@ -15,7 +15,7 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
 ]
 packages = [
-    { include = "src/appier-report.py" },
+    { include = "appier_report" },
     { include = "tests", format = "sdist" },
 ]
 
