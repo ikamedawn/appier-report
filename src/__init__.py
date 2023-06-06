@@ -1,2 +1,2 @@
 """Top-level package for this lib."""
-from .example import SampleClass
+from .cost_api import Report

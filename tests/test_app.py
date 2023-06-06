@@ -1,21 +1,38 @@
 #!/usr/bin/env python
 """Tests for `src` package."""
 # pylint: disable=redefined-outer-name
-
 import os
-
 import pytest
 
-from src import SampleClass
+from datetime import datetime, timedelta
+
+from src import Report
 
 
-# @pytest.fixture
-# def api_key():
-#     api_key = os.environ.get("API_KEY", None)
-#     assert api_key is not None
-#     return api_key
-#
-#
-# def test_report(api_key):
-#     report = SampleClass(api_key=api_key)
-#     assert report is not None
+@pytest.fixture
+def access_token():
+    access_token = os.environ.get("APPIER_ACCESS_TOKEN", None)
+    assert access_token is not None
+    return access_token
+
+
+def test_campaign_report(access_token):
+    campaign_report = Report(access_token=access_token, api_type="campaign")
+    assert campaign_report is not None
+
+    start_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+    end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+
+    report = campaign_report.get_report(start_date=start_date, end_date=end_date)
+    assert len(report) > 0
+
+
+def test_inventory_report(access_token):
+    inventory_report = Report(access_token=access_token, api_type="inventory")
+    assert inventory_report is not None
+
+    start_date = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
+    end_date = (datetime.now() - timedelta(days=3)).strftime("%Y-%m-%d")
+
+    report = inventory_report.get_report(start_date=start_date, end_date=end_date)
+    assert len(report) > 0
