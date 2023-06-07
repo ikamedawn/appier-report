@@ -119,3 +119,14 @@ class Report:
             )
 
         return result
+
+
+if __name__ == '__main__':
+    import os
+
+    access_token = os.environ.get('APPIER_ACCESS_TOKEN')
+    assert access_token, 'Please set APPIER_ACCESS_TOKEN environment variable'
+
+    report = Report(api_type='inventory', access_token=access_token)
+    data = report.get_report(start_date='2023-05-15', end_date='2023-06-06')
+    print(data)
