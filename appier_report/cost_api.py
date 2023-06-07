@@ -63,10 +63,6 @@ class Report:
         Doc Author:
             minhpc@ikameglobal.com
         """
-        if not start_date or not end_date:
-            start_date = (datetime.now() - timedelta(days=2)).strftime("%Y-%m-%d")
-            end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-
         params = {
             "access_token": self.access_token,
             "start_date": start_date,
@@ -76,15 +72,17 @@ class Report:
         }
 
         for i in range(max_retries + 1):
-            response = requests.get(url=self.endpoint, params=params)
-
-            if response.status_code == 200:
-                return response.json()
-            else:
-                print(f"Retrying... ({i + 1}/{max_retries})")
+            try:
+                response = requests.get(url=self.endpoint, params=params)
+                if response.status_code == 200:
+                    return response.json()
+            except Exception as e:
+                print(f"Error: {e}")
+                print('---------------------------------')
+                print(traceback.format_exc())
+                print('---------------------------------')
+                print(f"Retrying in {retry_interval} seconds...")
                 time.sleep(retry_interval)
-
-        print(traceback.format_exc())
         raise Exception(f"Error: {response.status_code}")
 
     def get_report(
@@ -134,3 +132,9 @@ class Report:
             )
 
         return result
+
+
+if __name__ == '__main__':
+    inventory_report = Report(access_token="52da5d8cd6a84a9dbef1fd7c55159193", api_type='inventory')
+    report = inventory_report.get_report(start_date='2023-06-04', end_date='2023-06-04')
+    print(report)
