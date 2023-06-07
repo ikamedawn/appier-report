@@ -1,9 +1,6 @@
-import time
-import traceback
-from datetime import datetime, timedelta
-
 import requests
-
+from requests.adapters import HTTPAdapter
+from datetime import datetime, timedelta
 from appier_report.utils.date_utils import DateUtils
 
 
@@ -40,7 +37,6 @@ class Report:
         end_date: str = None,
         timezone: int = 0,
         max_retries: int = 3,
-        retry_interval: int = 30,
         **kwargs,
     ) -> list[dict]:
         """
@@ -70,20 +66,14 @@ class Report:
             "timezone": timezone,
             **kwargs,
         }
-
-        for i in range(max_retries + 1):
-            try:
-                response = requests.get(url=self.endpoint, params=params)
-                if response.status_code == 200:
-                    return response.json()
-            except Exception as e:
-                print(f"Error: {e}")
-                print('---------------------------------')
-                print(traceback.format_exc())
-                print('---------------------------------')
-                print(f"Retrying in {retry_interval} seconds...")
-                time.sleep(retry_interval)
-        raise Exception(f"Error: {response.status_code}")
+        adapter = HTTPAdapter(max_retries=max_retries)
+        with requests.Session() as session:
+            session.mount(self.endpoint, adapter)
+            response = session.get(url=self.endpoint, params=params)
+            if response.status_code == 200:
+                return response.json()
+            else:
+                raise Exception(f"Error: {response.status_code}")
 
     def get_report(
         self,
@@ -92,7 +82,6 @@ class Report:
         date_interval: int = 5,
         timezone: int = 0,
         max_retries: int = 3,
-        retry_interval: int = 30,
         **kwargs,
     ) -> list[dict]:
         """
@@ -104,7 +93,6 @@ class Report:
             date_interval: Number of days between each request.
             timezone: Timezone offset in hours.
             max_retries: Number of retries before giving up.
-            retry_interval: Time to wait between retries.
             **kwargs: Other parameters
 
         Returns:
@@ -126,15 +114,8 @@ class Report:
                     end_date=end,
                     timezone=timezone,
                     max_retries=max_retries,
-                    retry_interval=retry_interval,
                     **kwargs,
                 )
             )
 
         return result
-
-
-if __name__ == '__main__':
-    inventory_report = Report(access_token="52da5d8cd6a84a9dbef1fd7c55159193", api_type='inventory')
-    report = inventory_report.get_report(start_date='2023-06-04', end_date='2023-06-04')
-    print(report)
