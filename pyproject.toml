@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "appier-report"
-version = "1.0.3"
+version = "1.0.4"
 homepage = "https://github.com/ikamedawn/appier-report"
 description = "Report APIs wrapper"
 authors = ["ikamedawn <minhpc@ikameglobal.com>"]
